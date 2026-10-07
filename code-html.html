@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Registration Portal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <span>AKTU</span> Student Registration Portal
+    </div>
+  </nav>
+
+  <div class="container">
+    
+    <!-- Quick Analytics Row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <p>Total Registered</p>
+        <h3 id="statTotalCount">0</h3>
+      </div>
+      <div class="stat-card">
+        <p>System Status</p>
+        <h3 style="color: #10b981; font-size: 1.1rem; margin-top: 8px;">● LocalStorage Active</h3>
+      </div>
+    </div>
+
+    <!-- Main Grid Content -->
+    <div class="main-grid">
+      
+      <!-- Registration Form -->
+      <div class="card">
+        <div class="card-header">
+          <h2>Register Student</h2>
+        </div>
+        <form id="registrationForm" novalidate>
+          
+          <div class="form-group">
+            <label for="studentId">Student ID / Roll No</label>
+            <input type="text" id="studentId" placeholder="e.g. STU101" />
+            <span class="error-text" id="studentIdError">Enter a unique Student ID.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" placeholder="e.g. Jane Doe" />
+            <span class="error-text" id="fullNameError">Must contain at least 3 letters.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="e.g. jane@example.com" />
+            <span class="error-text" id="emailError">Enter a valid email address.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="10-digit phone number" />
+            <span class="error-text" id="phoneError">Enter a valid 10-digit number.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="course">Course / Department</label>
+            <select id="course">
+              <option value="">Select a department</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Mechanical">Mechanical</option>
+            </select>
+            <span class="error-text" id="courseError">Please choose a course.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" />
+            <span class="error-text" id="dobError">Student must be at least 16 years old.</span>
+          </div>
+
+          <button type="submit" class="btn-primary">Register Student</button>
+        </form>
+      </div>
+
+      <!-- Live Records Display -->
+      <div class="card">
+        <div class="card-header">
+          <h2>Registered Records</h2>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Phone</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="studentTableBody">
+              <!-- Inserted via JS -->
+            </tbody>
+          </table>
+          <div id="emptyMessage" class="empty-state">
+            No students registered in LocalStorage yet.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
