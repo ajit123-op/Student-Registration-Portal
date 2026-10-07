@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Registration Portal</title>
+  <style>
+    :root {
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --bg-main: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --danger: #ef4444;
+      --danger-hover: #dc2626;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      padding-bottom: 40px;
+    }
+
+    /* Top Navigation Bar */
+    .navbar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      padding: 16px 32px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--text-main);
+    }
+
+    .navbar-brand span {
+      background: var(--primary);
+      color: white;
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    /* Main Container Grid */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Top Stats Header */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 16px 20px;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    .stat-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-card h3 {
+      font-size: 1.5rem;
+      color: var(--text-main);
+      margin-top: 4px;
+    }
+
+    /* Main Layout */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (min-width: 850px) {
+      .main-grid {
+        grid-template-columns: 380px 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+    }
+
+    .card-header {
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .card-header h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* Form Inputs */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #334155;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+      background-color: #f8fafc;
+      transition: all 0.2s ease;
+    }
+
+    input:focus, select:focus {
+      background-color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    input.error, select.error {
+      border-color: var(--danger);
+      background-color: #fef2f2;
+    }
+
+    .error-text {
+      color: var(--danger);
+      font-size: 0.75rem;
+      margin-top: 4px;
+      display: none;
+      font-weight: 500;
+    }
+
+    .error-text.active {
+      display: block;
+    }
+
+    button.btn-primary {
+      width: 100%;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.1s ease;
+      margin-top: 8px;
+    }
+
+    button.btn-primary:hover {
+      background-color: var(--primary-hover);
+    }
+
+    button.btn-primary:active {
+      transform: scale(0.99);
+    }
+
+    /* Styled Table */
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.88rem;
+    }
+
+    th {
+      background-color: #f8fafc;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-color);
+      text-align: left;
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background-color: #f8fafc;
+    }
+
+    /* Pill Badges */
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-cs { background: #dbeafe; color: #1e40af; }
+    .badge-it { background: #f3e8ff; color: #6b21a8; }
+    .badge-ece { background: #ffedd5; color: #9a3412; }
+    .badge-mech { background: #fee2e2; color: #991b1b; }
+    .badge-default { background: #f1f5f9; color: #475569; }
+
+    .delete-btn {
+      background: transparent;
+      color: var(--danger);
+      border: 1px solid #fecaca;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .delete-btn:hover {
+      background-color: var(--danger);
+      color: white;
+      border-color: var(--danger);
+    }
+
+    .empty-state {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 40px 0;
+      font-size: 0.9rem;
+    }
+
+    .student-id-cell {
+      font-family: monospace;
+      font-weight: 700;
+      color: #334155;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <span>AKTU</span> Student Registration Portal
+    </div>
+  </nav>
+
+  <div class="container">
+    
+    <!-- Quick Analytics Row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <p>Total Registered</p>
+        <h3 id="statTotalCount">0</h3>
+      </div>
+      <div class="stat-card">
+        <p>System Status</p>
+        <h3 style="color: #10b981; font-size: 1.1rem; margin-top: 8px;">● LocalStorage Active</h3>
+      </div>
+    </div>
+
+    <!-- Main Grid Content -->
+    <div class="main-grid">
+      
+      <!-- Registration Form -->
+      <div class="card">
+        <div class="card-header">
+          <h2>Register Student</h2>
+        </div>
+        <form id="registrationForm" novalidate>
+          
+          <div class="form-group">
+            <label for="studentId">Student ID / Roll No</label>
+            <input type="text" id="studentId" placeholder="e.g. STU101" />
+            <span class="error-text" id="studentIdError">Enter a unique Student ID.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" id="fullName" placeholder="e.g. Jane Doe" />
+            <span class="error-text" id="fullNameError">Must contain at least 3 letters.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="e.g. jane@example.com" />
+            <span class="error-text" id="emailError">Enter a valid email address.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="10-digit phone number" />
+            <span class="error-text" id="phoneError">Enter a valid 10-digit number.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="course">Course / Department</label>
+            <select id="course">
+              <option value="">Select a department</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Information Technology">Information Technology</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Mechanical">Mechanical</option>
+            </select>
+            <span class="error-text" id="courseError">Please choose a course.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" />
+            <span class="error-text" id="dobError">Student must be at least 16 years old.</span>
+          </div>
+
+          <button type="submit" class="btn-primary">Register Student</button>
+        </form>
+      </div>
+
+      <!-- Live Records Display -->
+      <div class="card">
+        <div class="card-header">
+          <h2>Registered Records</h2>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Phone</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="studentTableBody">
+              <!-- Inserted via JS -->
+            </tbody>
+          </table>
+          <div id="emptyMessage" class="empty-state">
+            No students registered in LocalStorage yet.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('registrationForm');
+    const tableBody = document.getElementById('studentTableBody');
+    const emptyMessage = document.getElementById('emptyMessage');
+    const statTotalCount = document.getElementById('statTotalCount');
+
+    const fields = {
+      studentId: document.getElementById('studentId'),
+      fullName: document.getElementById('fullName'),
+      email: document.getElementById('email'),
+      phone: document.getElementById('phone'),
+      course: document.getElementById('course'),
+      dob: document.getElementById('dob')
+    };
+
+    function validateField(id, value) {
+      const existingRecords = JSON.parse(localStorage.getItem('studentRecords')) || [];
+      
+      switch (id) {
+        case 'studentId':
+          const isDuplicate = existingRecords.some(s => s.studentId.toLowerCase() === value.trim().toLowerCase());
+          return value.trim() !== '' && !isDuplicate;
+        case 'fullName':
+          return /^[a-zA-Z\s]{3,}$/.test(value.trim());
+        case 'email':
+          return /^\S+@\S+\.\S+$/.test(value.trim());
+        case 'phone':
+          return /^[0-9]{10}$/.test(value.trim());
+        case 'course':
+          return value !== '';
+        case 'dob':
+          if (!value) return false;
+          const birthDate = new Date(value);
+          const today = new Date();
+          let age = today.getFullYear() - birthDate.getFullYear();
+          const monthDiff = today.getMonth() - birthDate.getMonth();
+          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+          }
+          return age >= 16;
+        default:
+          return true;
+      }
+    }
+
+    function toggleError(fieldId, isValid) {
+      const inputEl = fields[fieldId];
+      const errorEl = document.getElementById(`${fieldId}Error`);
+      if (isValid) {
+        inputEl.classList.remove('error');
+        errorEl.classList.remove('active');
+      } else {
+        inputEl.classList.add('error');
+        errorEl.classList.add('active');
+      }
+    }
+
+    Object.keys(fields).forEach(key => {
+      fields[key].addEventListener('input', () => {
+        const isValid = validateField(key, fields[key].value);
+        toggleError(key, isValid);
+      });
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      let isFormValid = true;
+      const formData = {};
+
+      Object.keys(fields).forEach(key => {
+        const value = fields[key].value;
+        const isValid = validateField(key, value);
+        toggleError(key, isValid);
+        if (!isValid) {
+          isFormValid = false;
+        } else {
+          formData[key] = value.trim();
+        }
+      });
+
+      if (isFormValid) {
+        saveStudent(formData);
+        form.reset();
+        renderTable();
+      }
+    });
+
+    function saveStudent(data) {
+      const records = JSON.parse(localStorage.getItem('studentRecords')) || [];
+      records.push(data);
+      localStorage.setItem('studentRecords', JSON.stringify(records));
+    }
+
+    window.deleteStudent = function(studentId) {
+      let records = JSON.parse(localStorage.getItem('studentRecords')) || [];
+      records = records.filter(student => student.studentId !== studentId);
+      localStorage.setItem('studentRecords', JSON.stringify(records));
+      renderTable();
+    };
+
+    function getBadgeClass(course) {
+      switch(course) {
+        case 'Computer Science': return 'badge-cs';
+        case 'Information Technology': return 'badge-it';
+        case 'Electronics': return 'badge-ece';
+        case 'Mechanical': return 'badge-mech';
+        default: return 'badge-default';
+      }
+    }
+
+    function renderTable() {
+      const records = JSON.parse(localStorage.getItem('studentRecords')) || [];
+      tableBody.innerHTML = '';
+      statTotalCount.textContent = records.length;
+
+      if (records.length === 0) {
+        emptyMessage.style.display = 'block';
+        return;
+      }
+
+      emptyMessage.style.display = 'none';
+
+      records.forEach(student => {
+        const row = document.createElement('tr');
+        const badgeClass = getBadgeClass(student.course);
+
+        row.innerHTML = `
+          <td class="student-id-cell">${student.studentId}</td>
+          <td><strong>${student.fullName}</strong></td>
+          <td><span class="badge ${badgeClass}">${student.course}</span></td>
+          <td>${student.phone}</td>
+          <td>
+            <button class="delete-btn" onclick="deleteStudent('${student.studentId}')">Delete</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    ren322223derTable();
+  </script>
+</body>
+</html>
